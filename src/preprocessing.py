@@ -108,3 +108,24 @@ def clean_dataset(df:pd.DataFrame)->pd.DataFrame:
     if df["TotalCharges"].isnull().sum()>0:
         df=df.dropna(subset=["TotalCharges"])
     return df
+
+
+def build_features(df;pd.DataFrame)->tuple[pd.DataFrame,pd.Series]:
+    """
+    Separate the dataset into features (X) and target (y).
+
+    Args:
+        df: Cleaned dataframe.
+
+    Returns:
+        X: Feature dataframe.
+        y: Target series.
+    """
+    #Churn is target column and customerID is just an identifier
+    X=df.drop(columns=["customerID","Churn"])
+    y=df["Churn"]
+    
+    return X,y
+
+
+    
