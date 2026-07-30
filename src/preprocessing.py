@@ -2,6 +2,8 @@ from pathlib import Path  #Treats file path as objects e.g. instead of writing f
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
+PROBLEM_TYPE = "Binary Classification"
+TARGET_COLUMN = "Churn"
 DATA_DIR = Path("data")
 RAW_DATA_PATH = DATA_DIR / "raw" / "WA_Fn-UseC_-Telco-Customer-Churn.csv"
 PROCESSED_DATA_PATH = DATA_DIR / "processed" / "processed_telco_churn.csv"
@@ -110,7 +112,7 @@ def clean_dataset(df:pd.DataFrame)->pd.DataFrame:
     return df
 
 
-def build_features(df;pd.DataFrame)->tuple[pd.DataFrame,pd.Series]:
+def build_features(df:pd.DataFrame)->tuple[pd.DataFrame,pd.Series]:
     """
     Separate the dataset into features (X) and target (y).
 
@@ -126,6 +128,8 @@ def build_features(df;pd.DataFrame)->tuple[pd.DataFrame,pd.Series]:
     y=df["Churn"]
     
     return X,y
+
+
 
 
     
