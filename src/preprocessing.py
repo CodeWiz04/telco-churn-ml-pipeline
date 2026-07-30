@@ -107,6 +107,7 @@ def clean_dataset(df:pd.DataFrame)->pd.DataFrame:
         print(missing_values[missing_values>0])
         
     #Handle missing values
+    # Drop rows with missing TotalCharges instead of imputing, as only 11 rows (0.16%) are affected.
     if df["TotalCharges"].isnull().sum()>0:
         df=df.dropna(subset=["TotalCharges"])
     return df
