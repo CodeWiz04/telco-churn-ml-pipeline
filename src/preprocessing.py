@@ -74,4 +74,18 @@ def dataset_summary(df:pd.DataFrame)->None:
     print(df["Churn"].value_counts(normalize=True))
     
 
-    
+def clean_dataset(df:pd.DataFrame)->pd.DataFrame:
+    """
+    Clean the Telco Customer Churn dataset.
+
+    - Convert TotalCharges to numeric
+    - Handle missing values created during conversion
+
+    Args:
+        df: Raw dataframe.
+
+    Returns:
+        Cleaned dataframe.
+    """
+    df=df.copy()
+    df["TotalCharges"]
