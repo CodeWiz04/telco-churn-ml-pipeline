@@ -22,4 +22,41 @@ def load_dataset(path:Path=RAW_DATA_PATH)->pd.DataFrame:
     return pd.read_csv(path)
 
 
+def validate_dataset(df:pd.Dataframe)->None:
+    """
+    Validate that the dataset contains the expected columns
+    and is not empty.
+    """
+    expected_columns={
+        "customerID",
+        "gender",
+        "SeniorCitizen",
+        "Partner",
+        "Dependents",
+        "tenure",
+        "PhoneService",
+        "MultipleLines",
+        "InternetService",
+        "OnlineSecurity",
+        "OnlineBackup",
+        "DeviceProtection",
+        "TechSupport",
+        "StreamingTV",
+        "StreamingMovies",
+        "Contract",
+        "PaperlessBilling",
+        "PaymentMethod",
+        "MonthlyCharges",
+        "TotalCharges",
+        "Churn"
+    }
+    if df.empty:
+        raise ValueError("Dataset is empty")
+    missing=expected_columns-set(df.columns)
+    if missing:
+        raise ValueError(
+            f"Missing columns: {missing}"
+        )
+    
+
     
