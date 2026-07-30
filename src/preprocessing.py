@@ -22,7 +22,7 @@ def load_dataset(path:Path=RAW_DATA_PATH)->pd.DataFrame:
     return pd.read_csv(path)
 
 
-def validate_dataset(df:pd.Dataframe)->None:
+def validate_dataset(df:pd.DataFrame)->None:
     """
     Validate that the dataset contains the expected columns
     and is not empty.
