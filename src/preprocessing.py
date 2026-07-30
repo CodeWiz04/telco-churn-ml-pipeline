@@ -57,6 +57,21 @@ def validate_dataset(df:pd.Dataframe)->None:
         raise ValueError(
             f"Missing columns: {missing}"
         )
+        
+def dataset_summary(df:pd.DataFrame)->None:
+    """Print a quick overview of the dataset"""
+    print("=" * 50)
+    print("Dataset Shape")
+    print(df.shape)
+    
+    print("\nData Types")
+    print(df.dtypes)
+    
+    print("\nMissing Values")
+    print(df.isnull().sum())
+    
+    print("\nTarget Distribution")
+    print(df["Churn"].value_counts(normalize=True))
     
 
     
