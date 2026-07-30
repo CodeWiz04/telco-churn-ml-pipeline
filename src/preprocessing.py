@@ -78,7 +78,7 @@ def clean_dataset(df:pd.DataFrame)->pd.DataFrame:
     """
     Clean the Telco Customer Churn dataset.
 
-    - Convert TotalCharges to numeric
+    - Convert datatypes accordingly
     - Handle missing values created during conversion
 
     Args:
@@ -87,5 +87,24 @@ def clean_dataset(df:pd.DataFrame)->pd.DataFrame:
     Returns:
         Cleaned dataframe.
     """
+    #Converting total charges datatype to int
     df=df.copy()
-    df["TotalCharges"]
+    df["TotalCharges"]=pd.to_numeric(
+        df["TotalCharges"],
+        errors="coerce"
+    )
+    
+    #Check missing values for all columns
+    missing_values=df.isnull().sum()
+    print("\nMissing Values:")
+    print(missing_values)
+    
+    #Print columns having missing values
+    if missing_values.sum()>0:
+        print("\nColumns with missing values:")
+        print(missing_values[missing_values>0])
+        
+    #Handle missing values
+    if df["TotalCharges"].isnull().sum()>0:
+        df=df.dropna(subset=["TotalCharges"])
+    return df
