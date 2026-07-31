@@ -1,6 +1,10 @@
 from pathlib import Path  #Treats file path as objects e.g. instead of writing file_path = "data/raw/telco.csv" we can write file_path = Path("data") / "raw" / "telco.csv"
 import pandas as pd
 from sklearn.model_selection import train_test_split
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.utils.class_weight import compute_class_weight
+import numpy as np
 
 PROBLEM_TYPE = "Binary Classification"
 TARGET_COLUMN = "Churn"
@@ -156,7 +160,22 @@ def identify_feature_types(X:pd.DataFrame)->tuple[list[str],list[str]]:
 
     return numerical_features, categorical_features
 
+def get_train_test_split(X:pd.DataFrame,y:pd.Series,test_size:float=0.2,random_state:int=42):
+    """
+    Split features and target into train and test sets.
 
+    Returns:
+        X_train, X_test, y_train, y_test
+    """
+    X_train,X_test,y_train,y_test=train_test_split(
+        X,
+        y,
+        test_size=test_size,
+        stratify=y,
+        random_state=random_state
+        
+    )
+    return X_train,X_test,y_train,y_test
     
     
     
