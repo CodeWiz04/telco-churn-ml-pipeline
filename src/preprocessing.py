@@ -201,14 +201,14 @@ def build_preprocessor(
     - Scale numerical columns.
     """
     preprocessor=ColumnTransformer(
-        transformers=[
-            (
-                "categorical",
-                OneHotEncoder(
-                    drop="first",
-                    handle_unknown="ignore"
+        transformers=[                       #list of tuples
+            (                                #every tuple consist of three parts
+                "categorical",               #name
+                OneHotEncoder(               #what to do
+                    drop="first",            # removes unnecessary column (sort alphabetically and then delete the ones which are unnecessary)
+                    handle_unknown="ignore"  #if an unseen entity occurs during testing which was never seen in training the normal enocoder would ail. This makes all zeros instead of giving an error
                 ),
-                categorical_features,
+                categorical_features, #which columns
             ),
             (
                 "numerical",
