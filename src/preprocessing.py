@@ -228,8 +228,8 @@ def preprocess_data(
     Fit preprocessing on training data and
     transform both train and test sets.
     """
-    X_train_processed=preprocessor.fit_transform(X_train)
-    X_test_processed=preprocessor.transform(X_test)
+    X_train_processed=preprocessor.fit_transform(X_train)     #fit=>learns from the training data   transform=>apply what it learned
+    X_test_processed=preprocessor.transform(X_test)           #no need to learn on testing dataset only transform
     
     return X_train_processed,X_test_processed
 
