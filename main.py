@@ -3,7 +3,8 @@ from src.preprocessing import(
     validate_dataset,
     dataset_summary,
     clean_dataset,
-    build_features
+    build_features,
+    identify_feature_types
 )
 
 def main():
@@ -24,6 +25,7 @@ def main():
 
     print("\nBuilding features and target...")
     X, y = build_features(df)
+    numerical_features, categorical_features = identify_feature_types(X)
 
     print("\nPipeline completed successfully!")
     print("=" * 60)
