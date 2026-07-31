@@ -130,6 +130,37 @@ def build_features(df:pd.DataFrame)->tuple[pd.DataFrame,pd.Series]:
     
     return X,y
 
+def identify_feature_types(X:pd.DataFrame)->tuple[list[str],list[str]]:
+    """
+    Identify numerical and categorical feature columns.
+
+    Args:
+        X: Feature dataframe.
+
+    Returns:
+        numerical_features: List of numerical feature names.
+        categorical_features: List of categorical feature names.
+    """
+    numerical_features=X.select_dtypes(
+        include=['int64','float64']
+    ).columns.tolist()
+    
+    categorical_features=X.select_dtypes(
+        include=["object","category"]
+    ).columns.tolist()
+    print("\nNumerical Features:")
+    print(numerical_features)
+
+    print("\nCategorical Features:")
+    print(categorical_features)
+
+    return numerical_features, categorical_features
+    
+    
+    
+    
+    
+
 
 
 
