@@ -65,4 +65,22 @@ def evaluate_model(
     return metrics
 
 def get_models(class_weights:dict)->dict:
+    """
+    Return all models to compare.
+    """
+
+    models = {
+        "Logistic Regression": LogisticRegression(
+            class_weight=class_weights,
+            random_state=42,
+            max_iter=1000,
+        ),
+        "Random Forest": RandomForestClassifier(
+            class_weight=class_weights,
+            random_state=42,
+        ),
+    }
+
+    return models
+
     
