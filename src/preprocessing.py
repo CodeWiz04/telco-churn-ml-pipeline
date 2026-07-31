@@ -212,7 +212,7 @@ def build_preprocessor(
             ),
             (
                 "numerical",
-                StandardScaler(),
+                StandardScaler(),           #((original value-mean)/standard deviation)
                 numerical_features,
             ),
         ]
