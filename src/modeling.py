@@ -30,3 +30,14 @@ def train_model(
     )
     return model
 
+def predict_model(
+    model,
+    X_test,
+):
+    """
+    Predict class labels and probabilities.
+    """
+    y_pred=model.predict(X_test)
+    y_prob=model.predictproba(X_test)[:,1]
+    
+    return y_pred,y_prob
