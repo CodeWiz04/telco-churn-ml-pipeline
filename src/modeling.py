@@ -41,3 +41,21 @@ def predict_model(
     y_prob=model.predict_proba(X_test)[:,1] #These are the probabilities that each customer will churn
     
     return y_pred,y_prob
+
+def evaluate_model(
+    y_test,
+    y_pred,
+    y_prob,
+):
+    """
+    Compute evaluation metrics.
+    """
+    metrics = {
+        "Accuracy": accuracy_score(y_test, y_pred),
+        "Precision": precision_score(y_test, y_pred),
+        "Recall": recall_score(y_test, y_pred),
+        "F1 Score": f1_score(y_test, y_pred),
+        "ROC-AUC": roc_auc_score(y_test, y_prob),
+    }
+
+    return metrics
