@@ -189,6 +189,36 @@ def encode_target(y: pd.Series) -> pd.Series:
         "No": 0,
         "Yes": 1
     })
+    
+def build_preprocessor(
+    numerical_features: list[str],
+    categorical_features: list[str],
+):
+    """
+    Create preprocessing pipeline.
+
+    - One-Hot Encode categorical columns.
+    - Scale numerical columns.
+    """
+    preprocessor=ColumnTransformer(
+        transformers=[
+            (
+                "categorical",
+                OneHotEncoder(
+                    drop="first",
+                    handle_unknown="ignore"
+                ),
+                categorical_features,
+            ),
+            (
+                "numerical",
+                StandardScaler(),
+                numerical_features,
+            ),
+        ]
+    )
+    return preprocessor
+
 
 
     
