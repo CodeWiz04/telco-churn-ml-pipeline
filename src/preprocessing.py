@@ -80,7 +80,7 @@ def dataset_summary(df:pd.DataFrame)->None:
     print(df["Churn"].value_counts(normalize=True))
     
 
-def clean_dataset(df:pd.DataFrame)->pd.DataFrame:
+def clean_dataset(df: pd.DataFrame) -> pd.DataFrame:
     """
     Clean the Telco Customer Churn dataset.
 
@@ -93,27 +93,31 @@ def clean_dataset(df:pd.DataFrame)->pd.DataFrame:
     Returns:
         Cleaned dataframe.
     """
-    #Converting total charges datatype to int
-    df=df.copy()
-    df["TotalCharges"]=pd.to_numeric(
+    df = df.copy()
+
+    # Convert TotalCharges to numeric
+    df["TotalCharges"] = pd.to_numeric(
         df["TotalCharges"],
         errors="coerce"
     )
-    
-    #Check missing values for all columns
-    missing_values=df.isnull().sum()
+
+    # Check missing values
+    missing_values = df.isnull().sum()
+
     print("\nMissing Values:")
     print(missing_values)
-    
-    #Print columns having missing values
-    if missing_values.sum()>0:
+
+    if missing_values.sum() > 0:
         print("\nColumns with missing values:")
-        print(missing_values[missing_values>0])
-        
-    #Handle missing values
-    # Drop rows with missing TotalCharges instead of imputing, as only 11 rows (0.16%) are affected.
-    if df["TotalCharges"].isnull().sum()>0:
-        df=df.dropna(subset=["TotalCharges"])
+        print(missing_values[missing_values > 0])
+
+    # Drop rows with missing TotalCharges
+    if df["TotalCharges"].isnull().sum() > 0:
+        df = df.dropna(subset=["TotalCharges"])
+
+    # Save cleaned dataset
+    df.to_csv(PROCESSED_DATA_PATH, index=False)
+
     return df
 
 
