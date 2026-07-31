@@ -177,6 +177,19 @@ def get_train_test_split(X:pd.DataFrame,y:pd.Series,test_size:float=0.2,random_s
     )
     return X_train,X_test,y_train,y_test
 
+def encode_target(y: pd.Series) -> pd.Series:
+    """
+    Encode target labels.
+
+    No -> 0
+    Yes -> 1
+    """
+
+    return y.map({
+        "No": 0,
+        "Yes": 1
+    })
+
 
     
     
