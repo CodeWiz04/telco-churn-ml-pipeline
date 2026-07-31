@@ -171,11 +171,13 @@ def get_train_test_split(X:pd.DataFrame,y:pd.Series,test_size:float=0.2,random_s
         X,
         y,
         test_size=test_size,
-        stratify=y,
-        random_state=random_state
+        stratify=y,#preserve the proportion (if dataset contains 75% no,25% yes; stratify will preserve this proportion in train and test split as well)
+        random_state=random_state#use the same data split on every run
         
     )
     return X_train,X_test,y_train,y_test
+
+
     
     
     
