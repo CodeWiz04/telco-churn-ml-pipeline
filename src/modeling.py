@@ -1,4 +1,7 @@
 from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
+
+from sklearn.model_selection import cross_val_score
 from sklearn.metrics import (
     accuracy_score,
     precision_score,
@@ -6,6 +9,7 @@ from sklearn.metrics import (
     f1_score,
     roc_auc_score,
 )
+import numpy as np
 def build_baseline_model(
     class_weights:dict,
 )->LogisticRegression:
@@ -59,3 +63,6 @@ def evaluate_model(
     }
 
     return metrics
+
+def get_models(class_weights:dict)->dict:
+    
