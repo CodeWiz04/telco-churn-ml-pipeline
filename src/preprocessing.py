@@ -171,8 +171,8 @@ def get_train_test_split(X:pd.DataFrame,y:pd.Series,test_size:float=0.2,random_s
         X,
         y,
         test_size=test_size,
-        stratify=y,#preserve the proportion (if dataset contains 75% no,25% yes; stratify will preserve this proportion in train and test split as well)
-        random_state=random_state#use the same data split on every run
+        stratify=y,               #preserve the proportion (if dataset contains 75% no,25% yes; stratify will preserve this proportion in train and test split as well)
+        random_state=random_state #use the same data split on every run
         
     )
     return X_train,X_test,y_train,y_test
@@ -218,6 +218,20 @@ def build_preprocessor(
         ]
     )
     return preprocessor
+
+def preprocess_data(
+    preprocessor,
+    X_train:pd.DataFrame,
+    X_test:pd.DataFrame,
+):
+    """
+    Fit preprocessing on training data and
+    transform both train and test sets.
+    """
+    X_train_processed=preprocessor.fit_transform(X_train)
+    X_test_processed=preprocessor.transform(X_test)
+    
+    return X_train_processed,X_test_processed
 
 
 
