@@ -51,11 +51,11 @@ def evaluate_model(
     Compute evaluation metrics.
     """
     metrics = {
-        "Accuracy": accuracy_score(y_test, y_pred),
-        "Precision": precision_score(y_test, y_pred),
-        "Recall": recall_score(y_test, y_pred),
-        "F1 Score": f1_score(y_test, y_pred),
-        "ROC-AUC": roc_auc_score(y_test, y_prob),
+        "Accuracy": accuracy_score(y_test, y_pred),   #Out of all predictions, how many were correct((TP+TN)/(TP+TN+FP+FN))
+        "Precision": precision_score(y_test, y_pred), #Out of everyone the model predicted will churn, how many actually churned((TP)/(TP+FP))
+        "Recall": recall_score(y_test, y_pred),       #(TPR/Sensitivity)Out of all customers who actually churned, how many did the model successfully find((TP)/(TP+FN))
+        "F1 Score": f1_score(y_test, y_pred),         #A balanced measure that is high only when both Precision and Recall are high.((2*Precision*recall)/(Precision+Recall))
+        "ROC-AUC": roc_auc_score(y_test, y_prob),     #plots a curve between FPR and TPR for every possible threshold (1.0, 0.99, 0.98, …, 0.0)
     }
 
     return metrics
