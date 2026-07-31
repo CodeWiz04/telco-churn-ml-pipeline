@@ -233,6 +233,20 @@ def preprocess_data(
     
     return X_train_processed,X_test_processed
 
+def compute_class_weights(
+    y_train:pd.Series,
+)->dict:
+    classes=np.unique(y_train)
+    
+    weights=compute_class_weight(
+        class_weight="balanced",      #((total Samples)/(no of classes*samples in that class))
+                                      #if class is imbalanced minority will get more importance
+        classes=classes,
+        y=y_train,
+    )
+    return dict(zip(classes, weights))
+
+
 
 
     
