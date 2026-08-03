@@ -102,17 +102,17 @@ def tune_model(
         Best cross-validation score.
     """
     grid_search=GridSearchCV( 
-        estimator=model,    
-        param_grid=param_grid,
-        cv=cv,
-        scoring="f1",
-        n_jobs=-1,  
+        estimator=model,        #which model to tune
+        param_grid=param_grid,  #list of parameter values to try
+        cv=cv,                  #every parameter combination is evaluated on 5-fold
+        scoring="f1",           #chooses parameter combination which gives best f1 score
+        n_jobs=-1,              #use all cpu cores so that model training could be done in parallel
     )
-    grid_search.fit(X_train,y_train)
+    grid_search.fit(X_train,y_train)  #for every parameter combination runs 5-fold, compute f1 and store 
     return (
-        grid_search.best_estimator_,
-        grid_search.best_param  _,
-        grid_search.best_score_,
+        grid_search.best_estimator_, #returns trained model with best parameters
+        grid_search.best_params_,    #returns best parameters values
+        grid_search.best_score_,     #returns highest average cross validation score
     )
 def predict_model(
     model,
