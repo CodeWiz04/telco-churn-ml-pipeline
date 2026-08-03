@@ -129,6 +129,6 @@ def predict_model(
     Predict class labels and probabilities.
     """
     y_pred=model.predict(X_test)
-    y_prob=model.predict_proba(X_test)[:,1]
+    y_prob=model.predict_proba(X_test)[:,1]   #Convert into Probablities that each customer will churn (1) or not churn (0)
     
     return y_pred,y_prob
