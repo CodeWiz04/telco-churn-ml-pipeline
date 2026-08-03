@@ -121,4 +121,14 @@ def cross_validate_model(
         "cv_std": np.std(scores),
     }
 
+def predict_model(
+    model,
+    X_test,
+):
+    """
+    Predict class labels and probabilities.
+    """
+    y_pred=model.predict(X_test)
+    y_prob=model.predict_proba(X_test)[:,1]
     
+    return y_pred,y_prob
