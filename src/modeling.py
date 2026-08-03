@@ -206,3 +206,38 @@ def train_and_evaluate(
 
     return model, metrics
 
+def tune_and_evaluate(
+    model,
+    param_grid,
+    X_train,
+    X_test,
+    y_train,
+    y_test,
+):
+    """
+    Tune, train and evaluate one model.
+    """
+
+    best_model, best_params, best_cv_score = tune_model(
+        model,
+        param_grid,
+        X_train,
+        y_train,
+    )
+
+    y_pred, y_prob = predict_model(
+        best_model,
+        X_test,
+    )
+
+    metrics = evaluate_model(
+        y_test,
+        y_pred,
+        y_prob,
+    )
+
+    metrics["Best Parameters"] = best_params
+    metrics["Best CV Score"] = best_cv_score
+
+    return best_model, metrics
+
