@@ -113,7 +113,7 @@ def cross_validate_model(
         X=X_train,
         y=y_train,
         cv=cv,
-        scoring="f1",
+        scoring="f1",  #as dataset is imbalanced so F1 score is a better metric to evaluate the model performance(since it requires both precison and recall to be high)
     )
     return {
         "cv_scores": scores,
