@@ -108,6 +108,17 @@ def cross_validate_model(
         Standard deviation,
         Individual fold scores.
     """
-    
+    scores=cross_val_score(
+        estimator=model,
+        X=X_train,
+        y=y_train,
+        cv=cv,
+        scoring="f1",
+    )
+    return {
+        "cv_scores": scores,
+        "cv_mean": np.mean(scores),
+        "cv_std": np.std(scores),
+    }
 
     
