@@ -1,7 +1,10 @@
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
 
-from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import (
+    cross_val_score,
+    GridSearchCV
+    )
 from sklearn.metrics import (
     accuracy_score,
     precision_score,
@@ -153,3 +156,4 @@ def train_and_evaluate(
     metrics.update(cv_results)
 
     return model, metrics
+
