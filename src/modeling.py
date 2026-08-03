@@ -151,3 +151,40 @@ def evaluate_model(
 
     return metrics
 
+def train_and_evaluate(
+    model,
+    X_train,
+    X_test,
+    y_train,
+    y_test,
+):
+    """
+    Train, cross validate and evaluate one model.
+    """
+
+    cv_results = cross_validate_model(
+        model,
+        X_train,
+        y_train,
+    )
+
+    model = train_model(
+        model,
+        X_train,
+        y_train,
+    )
+
+    y_pred, y_prob = predict_model(
+        model,
+        X_test,
+    )
+
+    metrics = evaluate_model(
+        y_test,
+        y_pred,
+        y_prob,
+    )
+
+    metrics.update(cv_results)
+
+    return model, metrics
