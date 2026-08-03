@@ -45,6 +45,28 @@ def get_models(class_weights: dict) -> dict:
 
     return models
 
+def get_parameters_grids(
+    
+)->dict:
+    """
+    Return hyperparameter grids for each model.
+    """
+    parameters_grid={
+        "Logistic Regression":{
+            "C":[0.01,0.1,1,10],
+            "solver":[
+                "liblinear",
+                "lbfgs"
+            ],
+        },
+        "Random Forest":{
+            "n_estimtors":[100,200],
+            "max_depth":[None,10,20],
+            "min_sample_split":[2,5],
+            "min_sample_leafs":[1,2],
+        },
+    }
+    return parameters_grid
 
 def train_model(
     model,
