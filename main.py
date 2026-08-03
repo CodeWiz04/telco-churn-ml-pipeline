@@ -12,12 +12,17 @@ from src.preprocessing import (
     compute_class_weights,
 )
 
+from src.modeling import (
+    get_models,
+    train_and_evaluate,
+)
+
 
 def main():
-    """Run the complete data preprocessing pipeline."""
+    """Run the complete Telco Churn ML pipeline."""
 
     print("=" * 60)
-    print("TELCO CUSTOMER CHURN PREPROCESSING PIPELINE")
+    print("TELCO CUSTOMER CHURN ML PIPELINE")
     print("=" * 60)
 
     # Load dataset
@@ -44,24 +49,27 @@ def main():
     print("\nIdentifying feature types...")
     numerical_features, categorical_features = identify_feature_types(X)
 
-    # Train-test split
+    # Train-Test Split
     print("\nSplitting dataset...")
-    X_train, X_test, y_train, y_test = get_train_test_split(X, y)
+    X_train, X_test, y_train, y_test = get_train_test_split(
+        X,
+        y,
+    )
 
     # Encode target labels
     print("\nEncoding target labels...")
     y_train = encode_target(y_train)
     y_test = encode_target(y_test)
 
-    # Build preprocessing pipeline
+    # Build preprocessor
     print("\nBuilding preprocessing pipeline...")
     preprocessor = build_preprocessor(
         numerical_features,
         categorical_features,
     )
 
-    # Apply preprocessing
-    print("\nApplying preprocessing...")
+    # Preprocess data
+    print("\nPreprocessing dataset...")
     X_train_processed, X_test_processed = preprocess_data(
         preprocessor,
         X_train,
@@ -72,41 +80,59 @@ def main():
     print("\nComputing class weights...")
     class_weights = compute_class_weights(y_train)
 
-    # -----------------------------
-    # Results
-    # -----------------------------
-    print("\n" + "=" * 60)
+    # Build models
+    print("\nCreating models...")
+    models = get_models(class_weights)
+
+    results = {}
+
+    # Train and evaluate each model
+    for model_name, model in models.items():
+
+        print(f"\n{'=' * 60}")
+        print(f"Training {model_name}")
+        print(f"{'=' * 60}")
+
+        trained_model, metrics = train_and_evaluate(
+            model,
+            X_train_processed,
+            X_test_processed,
+            y_train,
+            y_test,
+        )
+
+        results[model_name] = metrics
+
+    # ======================================================
+    # Final Results
+    # ======================================================
+
+    print("\n")
+    print("=" * 70)
+    print("FINAL MODEL COMPARISON")
+    print("=" * 70)
+
+    for model_name, metrics in results.items():
+
+        print(f"\n{model_name}")
+        print("-" * 50)
+
+        print(f"Accuracy : {metrics['Accuracy']:.4f}")
+        print(f"Precision: {metrics['Precision']:.4f}")
+        print(f"Recall   : {metrics['Recall']:.4f}")
+        print(f"F1 Score : {metrics['F1 Score']:.4f}")
+        print(f"ROC-AUC  : {metrics['ROC-AUC']:.4f}")
+
+        print("\nCross Validation")
+
+        print(f"Fold Scores : {metrics['cv_scores']}")
+        print(f"Mean Score  : {metrics['cv_mean']:.4f}")
+        print(f"Std Dev     : {metrics['cv_std']:.4f}")
+
+    print("\n")
+    print("=" * 70)
     print("PIPELINE COMPLETED SUCCESSFULLY")
-    print("=" * 60)
-
-    print("\nDataset Shapes")
-    print(f"Original X : {X.shape}")
-    print(f"Original y : {y.shape}")
-
-    print("\nTrain/Test Shapes")
-    print(f"X_train : {X_train.shape}")
-    print(f"X_test  : {X_test.shape}")
-    print(f"y_train : {y_train.shape}")
-    print(f"y_test  : {y_test.shape}")
-
-    print("\nProcessed Data Shapes")
-    print(f"Processed X_train : {X_train_processed.shape}")
-    print(f"Processed X_test  : {X_test_processed.shape}")
-
-    print("\nTarget Distribution (Training)")
-    print(y_train.value_counts(normalize=True))
-
-    print("\nTarget Distribution (Testing)")
-    print(y_test.value_counts(normalize=True))
-
-    print("\nNumerical Features")
-    print(numerical_features)
-
-    print("\nCategorical Features")
-    print(categorical_features)
-
-    print("\nComputed Class Weights")
-    print(class_weights)
+    print("=" * 70)
 
 
 if __name__ == "__main__":

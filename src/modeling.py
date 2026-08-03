@@ -10,15 +10,38 @@ from sklearn.metrics import (
     roc_auc_score,
 )
 import numpy as np
+
+
 def build_baseline_model(
-    class_weights:dict,
-)->LogisticRegression:
-    model=LogisticRegression(
+    class_weights: dict,
+) -> LogisticRegression:
+    model = LogisticRegression(
         class_weight=class_weights,
         random_state=42,
         max_iter=1000,   #iterate upto 1000 iterations to find the best weight
     )
     return model
+
+
+def get_models(class_weights: dict) -> dict:
+    """
+    Return all models to compare.
+    """
+
+    models = {
+        "Logistic Regression": LogisticRegression(
+            class_weight=class_weights,
+            random_state=42,
+            max_iter=1000,
+        ),
+        "Random Forest": RandomForestClassifier(
+            class_weight=class_weights,
+            random_state=42,
+        ),
+    }
+
+    return models
+
 
 def train_model(
     model,
@@ -26,13 +49,40 @@ def train_model(
     y_train,
 ):
     """
-    Train the model.
+    Train a machine learning model.
     """
-    model.fit(
-        X_train,
-        y_train,
-    )
+    model.fit(X_train, y_train)
     return model
+
+
+def cross_validate_model(
+    model,
+    X_train,
+    y_train,
+    cv: int = 5,
+):
+    """
+    Perform k-fold cross validation.
+
+    Returns:
+        Mean CV score,
+        Standard deviation,
+        Individual fold scores.
+    """
+    scores = cross_val_score(
+        estimator=model,
+        X=X_train,
+        y=y_train,
+        cv=cv,
+        scoring="f1",  #as dataset is imbalanced so F1 score is a better metric to evaluate the model performance(since it requires both precison and recall to be high)
+    )
+
+    return {
+        "cv_scores": scores,
+        "cv_mean": np.mean(scores),
+        "cv_std": np.std(scores),
+    }
+
 
 def predict_model(
     model,
@@ -41,10 +91,11 @@ def predict_model(
     """
     Predict class labels and probabilities.
     """
-    y_pred=model.predict(X_test)
-    y_prob=model.predict_proba(X_test)[:,1] #These are the probabilities that each customer will churn
-    
-    return y_pred,y_prob
+    y_pred = model.predict(X_test)
+    y_prob = model.predict_proba(X_test)[:, 1]   #Convert into Probablities that each customer will churn (1) or not churn (0)
+
+    return y_pred, y_prob
+
 
 def evaluate_model(
     y_test,
@@ -64,92 +115,6 @@ def evaluate_model(
 
     return metrics
 
-def get_models(class_weights:dict)->dict:
-    """
-    Return all models to compare.
-    """
-
-    models = {
-        "Logistic Regression": LogisticRegression(
-            class_weight=class_weights,
-            random_state=42,
-            max_iter=1000,
-        ),
-        "Random Forest": RandomForestClassifier(
-            class_weight=class_weights,
-            random_state=42,
-        ),
-    }
-
-    return models
-
-def train_model(
-    model,
-    X_train,
-    y_train,
-):
-    """
-    Train a machine learning model.
-    """
-    model.fit(X_train,y_train)
-    return model
-
-def cross_validate_model(
-    model,
-    X_train,
-    y_train,
-    cv:int=5,
-):
-    """
-    Perform k-fold cross validation.
-
-    Returns:
-        Mean CV score,
-        Standard deviation,
-        Individual fold scores.
-    """
-    scores=cross_val_score(
-        estimator=model,
-        X=X_train,
-        y=y_train,
-        cv=cv,
-        scoring="f1",  #as dataset is imbalanced so F1 score is a better metric to evaluate the model performance(since it requires both precison and recall to be high)
-    )
-    return {
-        "cv_scores": scores,
-        "cv_mean": np.mean(scores),
-        "cv_std": np.std(scores),
-    }
-
-def predict_model(
-    model,
-    X_test,
-):
-    """
-    Predict class labels and probabilities.
-    """
-    y_pred=model.predict(X_test)
-    y_prob=model.predict_proba(X_test)[:,1]   #Convert into Probablities that each customer will churn (1) or not churn (0)
-    
-    return y_pred,y_prob
-
-def evaluate_model(
-    y_test,
-    y_pred,
-    y_prob,
-):
-    """
-    Compute evaluation metrics.
-    """
-    metrics = {
-        "Accuracy": accuracy_score(y_test, y_pred),
-        "Precision": precision_score(y_test, y_pred),
-        "Recall": recall_score(y_test, y_pred),
-        "F1 Score": f1_score(y_test, y_pred),
-        "ROC-AUC": roc_auc_score(y_test, y_prob),
-    }
-
-    return metrics
 
 def train_and_evaluate(
     model,
