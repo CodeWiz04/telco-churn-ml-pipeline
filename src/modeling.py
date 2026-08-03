@@ -86,7 +86,34 @@ def cross_validate_model(
         "cv_std": np.std(scores),
     }
 
+def tune_model(
+    model,
+    param_grid:dict,
+    X_train,
+    y_train,
+    cv:int=5,
+):
+    """
+    Perform Grid Search hyperparameter tuning.
 
+    Returns:
+        Best trained model,
+        Best parameters,
+        Best cross-validation score.
+    """
+    grid_search=GridSearchCV( 
+        estimator=model,    
+        param_grid=param_grid,
+        cv=cv,
+        scoring="f1",
+        n_jobs=-1,  
+    )
+    grid_search.fit(X_train,y_train)
+    return (
+        grid_search.best_estimator_,
+        grid_search.best_param  _,
+        grid_search.best_score_,
+    )
 def predict_model(
     model,
     X_test,
