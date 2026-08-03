@@ -83,4 +83,31 @@ def get_models(class_weights:dict)->dict:
 
     return models
 
+def train_model(
+    model,
+    X_train,
+    y_train,
+):
+    """
+    Train a machine learning model.
+    """
+    model.fit(X_train,y_train)
+    return model
+
+def cross_validate_model(
+    model,
+    X_train,
+    y_train,
+    cv:int=5,
+):
+    """
+    Perform k-fold cross validation.
+
+    Returns:
+        Mean CV score,
+        Standard deviation,
+        Individual fold scores.
+    """
+    
+
     
