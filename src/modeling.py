@@ -45,7 +45,7 @@ def get_models(class_weights: dict) -> dict:
 
     return models
 
-def get_parameters_grids(
+def get_parameter_grids(
     
 )->dict:
     """
