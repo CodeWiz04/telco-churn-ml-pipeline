@@ -53,17 +53,17 @@ def get_parameters_grids(
     """
     parameters_grid={
         "Logistic Regression":{
-            "C":[0.01,0.1,1,10],
-            "solver":[
-                "liblinear",
-                "lbfgs"
+            "C":[0.01,0.1,1,10],  #inverse of regularization strengths
+            "solver":[            #optimization algos to min log loss and finds the best weights
+                "liblinear",      #works well fr small datasets,good for binary classification
+                "lbfgs"           #works well for medium/large datasets
             ],
         },
         "Random Forest":{
-            "n_estimtors":[100,200],
-            "max_depth":[None,10,20],
-            "min_sample_split":[2,5],
-            "min_sample_leafs":[1,2],
+            "n_estimators": [100, 200],  #no.of trees
+            "max_depth": [None, 10, 20],
+            "min_samples_split": [2, 5], 
+            "min_samples_leaf": [1, 2],
         },
     }
     return parameters_grid
