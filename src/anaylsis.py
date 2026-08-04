@@ -43,4 +43,17 @@ def compare_cv_scores(
         print("The difference between the two models is NOT statistically significant.")
         print("The observed difference is likely due to random variation in the CV folds.")
         
-        
+def get_feature_importance(
+    model,
+    preprocessor,
+) -> pd.DataFrame:
+    """
+    Extract feature importance (Random Forest)
+    or coefficients (Logistic Regression).
+
+    Returns:
+        DataFrame sorted by feature importance.
+    """
+    feature_names=preprocessor.get_feature_names_out()  #give the name of features after we applied one hot encoding
+    if isinstance(model,RandomForestClassifier):
+        importance=model.feature_importances_
