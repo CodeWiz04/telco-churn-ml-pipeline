@@ -74,4 +74,19 @@ def create_comparison_table(
     )
     
     return results
+
+def save_results(
+    comparison_table: pd.DataFrame,
+    output_path: str = "results/model_comparison.csv",
+):
+    """
+    Save comparison table as CSV.
+    """
+
+    comparison_table.to_csv(
+        output_path,
+        index=False,
+    )
+
+    print(f"\nResults saved to {output_path}")
         
