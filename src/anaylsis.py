@@ -103,3 +103,22 @@ def save_feature_importance(
         output_path,
         index=False,
     )
+    
+def analyze_model_errors(
+    X_test:pd.DataFrame,
+    y_test,
+    y_pred,
+):
+    """
+    Find which customer segments have the highest prediction error.
+
+    Returns:
+        Dictionary containing error rates for different segments.
+    """
+    error_df=X_test.copy()
+    error_df["Actual"]=y_test.values
+    error_df["Predicted"]=y_pred
+    error_df["Incorrect"] = (
+        error_df["Actual"] != error_df["Predicted"]
+    )
+    
