@@ -18,6 +18,12 @@ from src.modeling import (
     get_parameter_grids,
     tune_and_evaluate,
 )
+from src.evaluation import (
+    create_comparison_table,
+    save_results,
+    print_comparison_table,
+    print_confusion_matrix,
+)
 def main():
     """Run the complete Telco Churn ML pipeline."""
 
@@ -174,6 +180,40 @@ def main():
         print(f"Recall   : {tuned['Recall']:.4f}")
         print(f"F1 Score : {tuned['F1 Score']:.4f}")
         print(f"ROC-AUC  : {tuned['ROC-AUC']:.4f}")
+    # ======================================================
+    # Model Evaluation
+    # ======================================================
+
+    comparison_table = create_comparison_table(
+        baseline_results,
+        tuned_results,
+    )
+
+    print_comparison_table(
+        comparison_table,
+    )
+
+    save_results(
+        comparison_table,
+    )
+
+    # Print confusion matrices
+    print("\n")
+    print("=" * 70)
+    print("CONFUSION MATRICES")
+    print("=" * 70)
+
+    for model_name in models.keys():
+
+        print_confusion_matrix(
+            f"{model_name} (Baseline)",
+            baseline_results[model_name]["Confusion Matrix"],
+        )
+
+        print_confusion_matrix(
+            f"{model_name} (Tuned)",
+            tuned_results[model_name]["Confusion Matrix"],
+        )
 
     print("\n")
     print("=" * 70)
