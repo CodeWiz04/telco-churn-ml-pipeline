@@ -56,4 +56,50 @@ def get_feature_importance(
     """
     feature_names=preprocessor.get_feature_names_out()  #give the name of features after we applied one hot encoding
     if isinstance(model,RandomForestClassifier):
-        importance=model.feature_importances_
+        importance=model.feature_importances_   #Returns importance of each feature in prediction
+    elif isinstance(model,LogisticRegression):
+        importance=abs(model.coef_[0])          #has shape (1,no.of features), so returns one and only row of coefficients
+    else:
+        raise ValueError("Unsupported model type.")
+
+    feature_importance = pd.DataFrame(
+        {
+            "Feature": feature_names,
+            "Importance": importance,
+        }
+    )
+
+    feature_importance = feature_importance.sort_values(
+        by="Importance",
+        ascending=False,
+    ).reset_index(drop=True)
+
+    return feature_importance
+def display_feature_importance(
+    feature_importance: pd.DataFrame,
+    top_n: int = 10,
+):
+    """
+    Display the most important features.
+    """
+
+    print("\n" + "=" * 70)
+    print("QUESTION 3")
+    print("=" * 70)
+
+    print(f"\nTop {top_n} Most Important Features:\n")
+
+    print(feature_importance.head(top_n))
+
+def save_feature_importance(
+    feature_importance: pd.DataFrame,
+    output_path,
+):
+    """
+    Save feature importance to CSV.
+    """
+
+    feature_importance.to_csv(
+        output_path,
+        index=False,
+    )
