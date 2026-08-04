@@ -13,7 +13,8 @@ def compare_cv_scores(
     lr_scores = baseline_results["Logistic Regression"]["cv_scores"]
     rf_scores = tuned_results["Random Forest"]["cv_scores"]
 
-    t_statistic, p_value = ttest_rel(
+    t_statistic, p_value = ttest_rel(   #t_statistics=>Average diff/variation in differences(How large is the difference compared to the amount of variation)
+                                        #p_value=>2*p(>=|t|)
         lr_scores,
         rf_scores,
     )
