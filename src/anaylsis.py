@@ -121,4 +121,59 @@ def analyze_model_errors(
     error_df["Incorrect"] = (
         error_df["Actual"] != error_df["Predicted"]
     )
+    segment_errors = {}
+
+    categorical_columns =(
+        X_test.select_dtypes(include="object").columns.tolist()
+        )
+    for column in categorical_columns:
+       segment_errors[column] = (     
+        error_df
+        .groupby(column)["Incorrect"]
+        .mean()
+        .sort_values(ascending=False)
+    )
+    error_df["Tenure Group"]=pd.cut(
+        error_df["tenure"],
+        bins=[0, 12, 24, 48, 72],
+        labels=[
+           "0-12",
+           "13-24",
+           "25-48",
+           "49-72",
+        ],
+    )
+    segment_errors["Tenure Group"] = (
+       error_df
+       .groupby("Tenure Group")["Incorrect"]
+       .mean()
+       .sort_values(ascending=False)
+    )
+    return segment_errors
+
+def display_error_analysis(
+    segment_errors: dict,
+):
+    """
+    Display customer segments with the highest error rate.
+    """
+
+    print("\n" + "=" * 70)
+    print("QUESTION 4")
+    print("=" * 70)
+
+    for segment, errors in segment_errors.items():
+
+        print(f"\n{segment}")
+        print("-" * 40)
+
+        print(errors)
+
+        worst_segment = errors.idxmax()
+        worst_error = errors.max()
+
+        print(
+            f"\nHighest Error: {worst_segment} "
+            f"({worst_error:.2%})"
+        )
     
