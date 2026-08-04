@@ -89,4 +89,33 @@ def save_results(
     )
 
     print(f"\nResults saved to {output_path}")
+    
+def print_confusion_matrix(
+    model_name: str,
+    confusion_mat,
+):
+    """
+    Print confusion matrix.
+    """
+
+    print(f"\n{model_name} Confusion Matrix")
+    print("-" * 40)
+    print(confusion_mat)
+
+
+def print_comparison_table(
+    comparison_table: pd.DataFrame,
+):
+    """
+    Print final ranked comparison table.
+    """
+
+    print("\n")
+    print("=" * 70)
+    print("FINAL MODEL RANKING")
+    print("=" * 70)
+
+    print(comparison_table.to_string(index=False))
+
+    print("\nPrimary Metric:", PRIMARY_METRIC)
         
