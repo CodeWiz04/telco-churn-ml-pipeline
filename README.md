@@ -1,7 +1,5 @@
 # Telco Customer Churn — ML Pipeline
 
-**NextBridge AI/ML Track — Summer Internship 2026 — Task 2: Core Machine Learning Algorithms**
-
 A reproducible, end-to-end machine learning pipeline that trains, tunes, and compares classical ML
 algorithms to predict customer churn for a telecom provider.
 
@@ -53,7 +51,7 @@ This project uses [`uv`](https://github.com/astral-sh/uv) for dependency managem
 
 ```bash
 # 1. Clone the repository
-git clone <your-repo-url>
+git clone <https://github.com/CodeWiz04/telco-churn-ml-pipeline>
 cd ml-algorithms-task2
 
 # 2. Create and activate a virtual environment
