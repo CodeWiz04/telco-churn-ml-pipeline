@@ -26,7 +26,7 @@ def evaluate_model(
         "Precision": precision_score(y_test,y_pred),
         "Recall": recall_score(y_test,y_pred),
         "F1 Score": f1_score(y_test,y_pred),
-        "ROC AUC Score": roc_auc_score(y_test,y_prob),
+        "ROC-AUC": roc_auc_score(y_test,y_prob),
     }
     return metrics
 
@@ -50,12 +50,12 @@ def create_comparison_table(
                 "Precision":metrics["Precision"],
                 "Recall":metrics["Recall"],
                 "F1 Score":metrics["F1 Score"],
-                "ROC AUC Score":metrics["ROC AUC Score"],             
+                "ROC-AUC":metrics["ROC-AUC"],             
             }
         )
-        for model_name, metrics in tuned_results.items():
+    for model_name, metrics in tuned_results.items():
 
-            rows.append(
+        rows.append(
             {
                 "Model": f"{model_name} (Tuned)",
                 "Accuracy": metrics["Accuracy"],
