@@ -24,6 +24,16 @@ from src.evaluation import (
     print_comparison_table,
     print_confusion_matrix,
 )
+from src.analysis import (
+    compare_cv_scores,
+    get_feature_importance,
+    display_feature_importance,
+    save_feature_importance,
+    analyze_model_errors,
+    display_error_analysis,
+)
+
+
 def main():
     """Run the complete Telco Churn ML pipeline."""
 
@@ -93,6 +103,9 @@ def main():
     # Hyperparameter grids
     parameter_grids = get_parameter_grids()
 
+    baseline_models = {}
+    tuned_models = {}
+
     baseline_results = {}
     tuned_results = {}
 
@@ -117,6 +130,7 @@ def main():
             y_test,
         )
 
+        baseline_models[model_name] = trained_model
         baseline_results[model_name] = metrics
 
     # ======================================================
@@ -141,6 +155,7 @@ def main():
             y_test,
         )
 
+        tuned_models[model_name] = tuned_model
         tuned_results[model_name] = tuned_metrics
 
     # ======================================================
@@ -180,6 +195,7 @@ def main():
         print(f"Recall   : {tuned['Recall']:.4f}")
         print(f"F1 Score : {tuned['F1 Score']:.4f}")
         print(f"ROC-AUC  : {tuned['ROC-AUC']:.4f}")
+
     # ======================================================
     # Model Evaluation
     # ======================================================
@@ -214,6 +230,89 @@ def main():
             f"{model_name} (Tuned)",
             tuned_results[model_name]["Confusion Matrix"],
         )
+
+    # ======================================================
+    # QUESTION 1
+    # ======================================================
+
+    print("\n" + "=" * 70)
+    print("QUESTION 1")
+    print("=" * 70)
+
+    baseline_recall = baseline_results["Logistic Regression"]["Recall"]
+
+    all_models = {
+        "Logistic Regression (Baseline)": baseline_results["Logistic Regression"]["Recall"],
+        "Logistic Regression (Tuned)": tuned_results["Logistic Regression"]["Recall"],
+        "Random Forest (Baseline)": baseline_results["Random Forest"]["Recall"],
+        "Random Forest (Tuned)": tuned_results["Random Forest"]["Recall"],
+    }
+
+    best_model = max(all_models, key=all_models.get)
+    best_recall = all_models[best_model]
+
+    improvement = best_recall - baseline_recall
+
+    print(f"\nPrimary Metric : Recall")
+    print(f"Best Model     : {best_model}")
+    print(f"Best Recall    : {best_recall:.4f}")
+    print(f"Baseline Recall: {baseline_recall:.4f}")
+    print(f"Improvement    : {improvement:.4f} ({improvement*100:.2f} percentage points)")
+
+    if improvement > 0:
+        print("\nConclusion:")
+        print(f"{best_model} outperformed the baseline on Recall.")
+    elif improvement < 0:
+        print("\nConclusion:")
+        print("The baseline Logistic Regression achieved the highest Recall.")
+    else:
+        print("\nConclusion:")
+        print("No improvement over the baseline. Both models achieved the same Recall.")
+
+    # ======================================================
+    # QUESTION 2
+    # ======================================================
+
+    compare_cv_scores(
+        baseline_results,
+        tuned_results,
+    )
+
+    # ======================================================
+    # QUESTION 3
+    # ======================================================
+
+    best_model_object = tuned_models["Random Forest"]
+
+    feature_importance = get_feature_importance(
+        best_model_object,
+        preprocessor,
+    )
+
+    display_feature_importance(
+        feature_importance,
+    )
+
+    save_feature_importance(
+        feature_importance,
+        "results/feature_importance.csv",
+    )
+
+    # ======================================================
+    # QUESTION 4
+    # ======================================================
+
+    best_predictions = tuned_results["Random Forest"]["Predictions"]
+
+    segment_errors = analyze_model_errors(
+        X_test,
+        y_test,
+        best_predictions,
+    )
+
+    display_error_analysis(
+        segment_errors,
+    )
 
     print("\n")
     print("=" * 70)
