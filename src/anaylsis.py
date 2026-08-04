@@ -1,4 +1,7 @@
 from scipy.stats import ttest_rel
+import pandas as pd
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
 
 
 def compare_cv_scores(
@@ -14,7 +17,7 @@ def compare_cv_scores(
     rf_scores = tuned_results["Random Forest"]["cv_scores"]
 
     t_statistic, p_value = ttest_rel(   #t_statistics=>Average diff/variation in differences(How large is the difference compared to the amount of variation)
-                                        #p_value=>2*p(>=|t|)
+                                        #p_value=>2*p(>=|t|)(tells us how likely it is that the difference between two models happened just by chance.)
         lr_scores,
         rf_scores,
     )
@@ -39,3 +42,5 @@ def compare_cv_scores(
         print("\nConclusion:")
         print("The difference between the two models is NOT statistically significant.")
         print("The observed difference is likely due to random variation in the CV folds.")
+        
+        
