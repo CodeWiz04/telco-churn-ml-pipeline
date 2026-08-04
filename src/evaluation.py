@@ -31,5 +31,47 @@ def evaluate_model(
     return metrics
 
 def create_comparison_table(
+    baseline_results:dict,
+    tuned_results:dict,
+)->pd.DataFrame:
     
-)
+    """
+    Create a comparison table for all models.
+
+    Returns:
+        Ranked pandas DataFrame.
+    """
+    rows=[]
+    for model_name,metrics in baseline_results.items():
+        rows.append(
+            {
+                "Model":f"{model_name} (Baseline)",
+                "Accuracy":metrics["Accuracy"],
+                "Precision":metrics["Precision"],
+                "Recall":metrics["Recall"],
+                "F1 Score":metrics["F1 Score"],
+                "ROC AUC Score":metrics["ROC AUC Score"],             
+            }
+        )
+        for model_name, metrics in tuned_results.items():
+
+            rows.append(
+            {
+                "Model": f"{model_name} (Tuned)",
+                "Accuracy": metrics["Accuracy"],
+                "Precision": metrics["Precision"],
+                "Recall": metrics["Recall"],
+                "F1 Score": metrics["F1 Score"],
+                "ROC-AUC": metrics["ROC-AUC"],
+            }
+        )
+    results=pd.DataFrame(rows)
+    results=results.sort_values(by=PRIMARY_METRIC,ascending=False).reset_index(drop=True)# Sorts wrt RECALL and renumber the indexes
+    results.insert(
+        0,  
+        "Rank",
+        range(1,len(results)+1),
+    )
+    
+    return results
+        
