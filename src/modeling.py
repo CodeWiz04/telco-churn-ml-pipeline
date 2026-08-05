@@ -47,7 +47,7 @@ def get_parameter_grids(
     """
     parameters_grid={
         "Logistic Regression":{
-            "C":[0.01,0.1,1,10],  #inverse of regularization strengths
+            "C":[0.01,0.1,1,10],  #inverse of regularization strengths    log loss+lamda(sum(w^2))  c=1/lamda
             "solver":[            #optimization algos to min log loss and finds the best weights
                 "liblinear",      #works well fr small datasets,good for binary classification
                 "lbfgs"           #works well for medium/large datasets

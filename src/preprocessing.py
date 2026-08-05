@@ -189,7 +189,7 @@ def encode_target(y: pd.Series) -> pd.Series:
     Yes -> 1
     """
 
-    return y.map({
+    return y.map({ #label 
         "No": 0,
         "Yes": 1
     })
@@ -204,13 +204,13 @@ def build_preprocessor(
     - One-Hot Encode categorical columns.
     - Scale numerical columns.
     """
-    preprocessor=ColumnTransformer(
+    preprocessor=ColumnTransformer(          #when diff columns require diff preprocessing
         transformers=[                       #list of tuples
             (                                #every tuple consist of three parts
                 "categorical",               #name
                 OneHotEncoder(               #what to do
                     drop="first",            # removes unnecessary column (sort alphabetically and then delete the ones which are unnecessary)
-                    handle_unknown="ignore"  #if an unseen entity occurs during testing which was never seen in training the normal enocoder would ail. This makes all zeros instead of giving an error
+                    handle_unknown="ignore"  #if an unseen entity occurs during testing which was never seen in training the normal enocoder would fail. This makes all zeros instead of giving an error
                 ),
                 categorical_features, #which columns
             ),
